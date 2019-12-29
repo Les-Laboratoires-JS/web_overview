@@ -3,41 +3,41 @@ request.open('GET', 'https://statme-api.tk/v1/message/guild/507389389098188820/'
 document.addEventListener('DOMContentLoaded', ()=>{
     request.onload = function() {
         if(request.status >= 200 && request.status < 400){
-            
-            const messages = JSON.parse(this.response, (key, value) => {
-                if(key.includes('timestamp'))
-                return new Date(value).getTime()
-                return value
-            })
+
+            const messages = JSON.parse(this.response)
             
             let 
-                channels = new Set(),
-                members = new Set()
+                channels_id = new Set(),
+                users_id = new Set()
 
             messages.forEach(message => {
-                channels.add(message.channel_id)
-                members.add(message.user_id)
+                channels_id.add(message.channel_id)
+                users_id.add(message.user_id)
             })
 
-            channels = Array.from(channels)
-            members = Array.from(members)
+            channels_id = Array.from(channels_id)
+            users_id = Array.from(users_id)
 
-            function messageByDay(member){
+            function messageByDay(user_id){
 
                 const day = 1000*60*60*24
 
-                const memberMessages = messages.filter(message => message.user_id === member)
+                const userMessages = messages.filter(message => message.user_id === user_id)
                 
-                if(memberMessages.length < 2) return 0
+                if(userMessages.length < 2) return 0
 
-                const start = memberMessages.sort((a,b) => a.created_timestamp - b.created_timestamp)[0].created_timestamp
-                const end = memberMessages.sort((a,b) => b.created_timestamp - a.created_timestamp)[0].created_timestamp
-                const time = end - start
+                const start = userMessages.sort((a,b) => a.created_timestamp - b.created_timestamp)[0].created_timestamp
+                const time = Date.now() - start
+                const days = time / day
 
-                const result = Math.round( memberMessages.length / (time / day) )
+                const result = Math.round( userMessages.length / days )
 
                 return result
 
+            }
+
+            function messageOf(user_id){
+                return messages.find(message => message.user_id === user_id)
             }
             
             const info = document.getElementById('info')
@@ -47,20 +47,29 @@ document.addEventListener('DOMContentLoaded', ()=>{
                 </header>
                 <main>
                     <h3> Message count : ${messages.length} </h3>
-                    <h3> Active channels : ${channels.length} </h3>
-                    <h3> Active members : ${members.length} </h3>
+                    <h3> Active channels : ${channels_id.length} </h3>
+                    <h3> Active users : ${users_id.length} </h3>
                     <h4> TOP 10 ACTIVITY </h4>
                     <ol>
-                        ${members
+                        ${users_id
                             .sort((a,b) => messageByDay(b) - messageByDay(a))
                             .slice(0,10)
-                            .map(member => `<li><span class="disk"> ${messageByDay(member)} </span> ${member} <span class="disk"> ${messages.filter(message => message.user_id === member).length} </span></li>`)
-                            .join('')
+                            .map(user_id => `
+                                <li>
+                                    <img src="${messageOf(user_id).user_image}" alt="" height="16">
+                                    <div>
+                                        ${messageOf(user_id).user_name}
+                                    </div>
+                                    <div>
+                                        ${messageByDay(user_id)} msg / day
+                                    </div>
+                                </li>
+                            `).join('')
                         }
                     </ol>
                 </main>
                 <footer>
-                    <span> FOOTER </span>
+                    
                 </footer>
             `
         }else{

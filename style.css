@@ -25,6 +25,8 @@ h1, h2, h3, h4 {
 
 a, a:hover {
     color: inherit;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 body {
@@ -37,23 +39,23 @@ body {
     border-bottom: 3px solid #ffd900;
 }
 
-header {
+body > header {
     padding: 20px;
     height: 120px;
 }
 
-header h1,
-header h2 {
+body > header h1,
+body > header h2 {
     font-size: 26px;
     text-align: center;
 }
 
-header h1 {
+body > header h1 {
     background-color: #111;
     border-bottom: 2px solid #fff;
 }
 
-header h2 {
+body > header h2 {
     position: relative;
     z-index: -1;
     color: #111;
@@ -86,6 +88,10 @@ body > header {
     height: 74px;
 }
 
+.discord-style header h2 {
+    font-size: 20px;
+}
+
 .discord-style main {
     height: 384px;
     padding: 20px;
@@ -99,8 +105,34 @@ body > header {
 }
 .discord-style main h4 {
     margin-top: 20px;
+    margin-bottom: 3px;
     font-size: 90%;
     font-weight: bold;
+}
+
+.discord-style main li {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.discord-style main li img + div {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.discord-style main li img {
+    border-radius: 50%;
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+.discord-style main li div:last-child {
+    flex-grow: 1;
+    text-align: end;
+    white-space: nowrap;
+    padding-left: 7px;
+    color: rgba(255, 255, 255, 0.288);
 }
 
 .discord-style footer {
@@ -128,10 +160,3 @@ body > header {
     opacity: 1;
 }
 
-.disk {
-    display: inline-block;
-    padding: 5px;
-    border-radius: 50%;
-    background-color: #444;
-    color: #fff;
-}
