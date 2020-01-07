@@ -1,7 +1,7 @@
 var request = new XMLHttpRequest()
 request.open('GET', 'https://statme-api.tk/v1/message/guild/507389389098188820/', true)
-document.addEventListener('DOMContentLoaded', ()=>{
-    request.onload = function() {
+document.addEventListener('DOMContentLoaded', async ()=>{
+    request.onload = async function() {
         if(request.status >= 200 && request.status < 400){
 
             const messages = JSON.parse(this.response)
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
             const info = document.getElementById('info')
             info.innerHTML = `
                 <header>
-                    <h2> Activity by <a href="https://statme-api.tk/statme/"> Statme </a> </h2>
+                    <h2> Activity by <a href="https://statme-api.tk/"> Statme </a> </h2>
                 </header>
                 <main>
                     <h3> Message count : ${messages.length} </h3>
