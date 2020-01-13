@@ -24,13 +24,13 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
                 const userMessages = messages.filter(message => message.user_id === user_id)
                 
-                if(userMessages.length < 2) return 0
+                if(userMessages.length < 1) return 0
 
                 const start = userMessages.sort((a,b) => a.created_timestamp - b.created_timestamp)[0].created_timestamp
                 const time = Date.now() - start
                 const days = time / day
 
-                const result = Math.round( userMessages.length / days )
+                const result = Math.min( Math.round( userMessages.length / days ), userMessages.length )
 
                 return result
 
@@ -46,9 +46,10 @@ document.addEventListener('DOMContentLoaded', async ()=>{
                     <h2> Activity by <a href="https://statme-api.tk/"> Statme </a> </h2>
                 </header>
                 <main>
-                    <h3> Message count : ${messages.length} </h3>
-                    <h3> Active channels : ${channels_id.length} </h3>
-                    <h3> Active users : ${users_id.length} </h3>
+                    <h4> STATISTICS BASED ON THE FOLLOWING </h4>
+                    <h3> 📨Messages : ${messages.length} </h3>
+                    <h3> 🛰️Channels : ${channels_id.length} </h3>
+                    <h3> 👨‍🔬Members : ${users_id.length} </h3>
                     <h4> TOP 10 ACTIVITY </h4>
                     <ol>
                         ${users_id
